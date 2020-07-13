@@ -8,25 +8,25 @@ import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
 import Sidebar from "./components/Sidebar/Sidebar";
-import Users from "./components/Users/Users";
+import UsersContainer from "./components/Users/UsersContainer";
 
-const App = (props) => {
+const App = () => {
     return (
         <div className="app-wrapper">
-            <Header/>
-            <Sidebar/>
+            <Header />
+            <Sidebar />
             <div className="app-wrapper-content">
                 <Route path="/profile" render={() => (
-                    <Profile/>
+                    <Profile />
                 )}/>
                 <Route path="/dialogs" render={() => (
-                    <DialogsContainer/>
+                    <DialogsContainer />
                 )}/>
                 <Route path="/news" component={News}/>
                 <Route path="/music" component={Music}/>
                 <Route path="/settings" component={Settings}/>
                 <Route path="/users"
-                       render={ () => <Users/> }/>
+                       render={ () => <UsersContainer /> }/>
             </div>
         </div>
     );

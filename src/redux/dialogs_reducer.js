@@ -56,20 +56,33 @@ const dialogsReducer = (state = initialState, action) => {
     let dialog = stateCopy.dialogs.find((el) => el.id === action.id);
     switch (action.type) {
         case UPDATE_ANSWER_MESSAGE:
-            dialog.savedTemplate = action.newText;
-            return stateCopy;
+            return {
+                ...state,
+                dialogs: state.dialogs.map (d => {
+                    return d.id === action.userId ? {...d, savedTemplate: action.newText} : d;
+                })
+            }
         case SEND_MESSAGE:
-            dialog.messages = [...dialog.messages, {id: 7, text: dialog.savedTemplate}];
-            dialog.savedTemplate = "";
-            return stateCopy;
+            return {
+                ...state,
+                dialogs: state.dialogs.map (d => {
+                    if (d.id === action.userId) {
+                        return {
+                            ...d,
+                            messages: [...d.messages, {id: 7, text: d.savedTemplate}],
+                            savedTemplate: ''
+                        }
+                    }
+                    return d;
+                })
+            }
         default:
             return state;
     }
 };
 
 export default dialogsReducer;
-export const updateAnswerMessage = (id, newText) => ({
-    type: UPDATE_ANSWER_MESSAGE,
-    id: id, newText: newText
+export const updateAnswerMessage = (userId, newText) => ({
+    type: UPDATE_ANSWER_MESSAGE, userId, newText
 });
-export const sendMessageC = (id) => ({type: SEND_MESSAGE, id: id});
+export const sendMessageC = (userId) => ({type: SEND_MESSAGE, userId});

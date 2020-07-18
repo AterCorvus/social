@@ -2,27 +2,21 @@ import React from "react";
 import styles from "./Users.module.css";
 import Avatar from "../Avatar/Avatar";
 import userPhoto from "../../assets/img/user.png";
+import {NavLink} from "react-router-dom";
+import Pagination from "../Pagination/Pagination";
 
 const Users = (props) => {
-    let pageCount = Math.ceil(props.totalUserCount / props.pageSize);
-    pageCount = pageCount > 10 ? 10 : pageCount;
-
-    let pages = [];
-    for (let i = 1; i <= pageCount; i++) pages.push(i);
+    const pageCount = Math.ceil(props.totalUserCount / props.pageSize);
 
     return <div>
-        <div>
-            {pages.map(p => {
-                return <span className={props.currentPage === p && styles.selectedPage}
-                             onClick={(e) => props.onPageChanged(p)}>{p}</span>
-            })}
-        </div>
         {
             props.users.map(u => <div key={u.id}>
                     <span>
                         <div>
-                            <Avatar src={u.photos.small != null ? u.photos.small : userPhoto}
-                                    className={styles.userAvatar}/>
+                            <NavLink to={'/profile/' + u.id}>
+                                <Avatar src={u.photos.small != null ? u.photos.small : userPhoto}
+                                        className={styles.userAvatar}/>
+                            </NavLink>
                         </div>
                         <div>
                             {u.followed ? <button onClick={() => props.unfollow(u.id)}>unfollow</button>
@@ -39,6 +33,8 @@ const Users = (props) => {
                     </span>
             </div>)
         }
+        <Pagination pageCount={pageCount} currentPage={props.currentPage}
+                    onPageChanged={props.onPageChanged} />
     </div>
 }
 

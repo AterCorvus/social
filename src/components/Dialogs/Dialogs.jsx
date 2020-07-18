@@ -7,7 +7,7 @@ const Dialogs = (props) => {
         return <DialogItem name={dialog.name} key={dialog.id} id={dialog.id} avaUrl={dialog.avatar}
                            savedTemplate={dialog.savedTemplate} messages={dialog.messages}
                            updateAnswerMessage={props.updateAnswerMessage}
-                           sendMessageC={props.sendMessageC}/>;
+                           sendMessage={props.sendMessage}/>;
     });
 
 

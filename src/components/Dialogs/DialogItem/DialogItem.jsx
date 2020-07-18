@@ -11,7 +11,7 @@ const DialogItem = (props) => {
     };
 
     let sendMessage = () => {
-        props.sendMessageC(props.id);
+        props.sendMessage(props.id);
     };
     return (
         <div className={classes.dialog}>

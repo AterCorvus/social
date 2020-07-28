@@ -10,20 +10,20 @@ const Users = (props) => {
     const pageCount = Math.ceil(props.totalUserCount / props.pageSize);
 
     const follow = (uid) => {
-        props.toggleIsFollowing(true);
+        props.toggleFollowInProgress(true, uid);
         UserApi.followUser(uid)
             .then(response => {
                 if (response == 0) props.follow(uid);
-                props.toggleIsFollowing(false);
+                props.toggleFollowInProgress(false, uid);
             });
     }
 
     const unfollow = (uid) => {
-        props.toggleIsFollowing(true);
+        props.toggleFollowInProgress(true, uid);
         UserApi.unfollowUser(uid)
             .then(response => {
                 if (response == 0) props.unfollow(uid);
-                props.toggleIsFollowing(false);
+                props.toggleFollowInProgress(false, uid);
             });
     }
 
@@ -38,8 +38,8 @@ const Users = (props) => {
                             </NavLink>
                         </div>
                         <div>
-                            {u.followed ? <button disabled={props.isFollowing} onClick={() => unfollow(u.id)}>unfollow</button>
-                                : <button disabled={props.isFollowing} onClick={() => follow(u.id)}>follow</button>}
+                            {u.followed ? <button disabled={props.followInProgress.includes(u.id)} onClick={() => unfollow(u.id)}>unfollow</button>
+                                : <button disabled={props.followInProgress.includes(u.id)} onClick={() => follow(u.id)}>follow</button>}
                         </div>
                     </span>
                 <span>

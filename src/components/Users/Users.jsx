@@ -4,9 +4,28 @@ import Avatar from "../Avatar/Avatar";
 import userPhoto from "../../assets/img/user.png";
 import {NavLink} from "react-router-dom";
 import Pagination from "../Pagination/Pagination";
+import {UserApi} from "../../api/api";
 
 const Users = (props) => {
     const pageCount = Math.ceil(props.totalUserCount / props.pageSize);
+
+    const follow = (uid) => {
+        props.toggleIsFollowing(true);
+        UserApi.followUser(uid)
+            .then(response => {
+                if (response == 0) props.follow(uid);
+                props.toggleIsFollowing(false);
+            });
+    }
+
+    const unfollow = (uid) => {
+        props.toggleIsFollowing(true);
+        UserApi.unfollowUser(uid)
+            .then(response => {
+                if (response == 0) props.unfollow(uid);
+                props.toggleIsFollowing(false);
+            });
+    }
 
     return <div>
         {
@@ -14,13 +33,13 @@ const Users = (props) => {
                     <span>
                         <div>
                             <NavLink to={'/profile/' + u.id}>
-                                <Avatar src={u.photos.small != null ? u.photos.small : userPhoto}
+                                <Avatar src={u.photos.small ? u.photos.small : userPhoto}
                                         className={styles.userAvatar}/>
                             </NavLink>
                         </div>
                         <div>
-                            {u.followed ? <button onClick={() => props.unfollow(u.id)}>unfollow</button>
-                                : <button onClick={() => props.follow(u.id)}>follow</button>}
+                            {u.followed ? <button disabled={props.isFollowing} onClick={() => unfollow(u.id)}>unfollow</button>
+                                : <button disabled={props.isFollowing} onClick={() => follow(u.id)}>follow</button>}
                         </div>
                     </span>
                 <span>
@@ -34,7 +53,7 @@ const Users = (props) => {
             </div>)
         }
         <Pagination pageCount={pageCount} currentPage={props.currentPage}
-                    onPageChanged={props.onPageChanged} />
+                    onPageChanged={props.onPageChanged}/>
     </div>
 }
 

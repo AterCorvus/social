@@ -13,9 +13,7 @@ const ProfileInfo = (props) => {
     return (
         <div>
             <div>
-                <img
-                    src='https://image.shutterstock.com/image-photo/bright-spring-view-cameo-island-260nw-1048185397.jpg'
-                    alt=''/>
+                <img src='https://image.shutterstock.com/image-photo/bright-spring-view-cameo-island-260nw-1048185397.jpg' />
             </div>
             <div className={classes.descriptionBlock}>
                 <img src={props.profile.photos.large} />

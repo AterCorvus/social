@@ -4,28 +4,9 @@ import Avatar from "../Avatar/Avatar";
 import userPhoto from "../../assets/img/user.png";
 import {NavLink} from "react-router-dom";
 import Pagination from "../Pagination/Pagination";
-import {UserApi} from "../../api/api";
 
 const Users = (props) => {
     const pageCount = Math.ceil(props.totalUserCount / props.pageSize);
-
-    const follow = (uid) => {
-        props.toggleFollowInProgress(true, uid);
-        UserApi.followUser(uid)
-            .then(response => {
-                if (response == 0) props.follow(uid);
-                props.toggleFollowInProgress(false, uid);
-            });
-    }
-
-    const unfollow = (uid) => {
-        props.toggleFollowInProgress(true, uid);
-        UserApi.unfollowUser(uid)
-            .then(response => {
-                if (response == 0) props.unfollow(uid);
-                props.toggleFollowInProgress(false, uid);
-            });
-    }
 
     return <div>
         {
@@ -38,8 +19,8 @@ const Users = (props) => {
                             </NavLink>
                         </div>
                         <div>
-                            {u.followed ? <button disabled={props.followInProgress.includes(u.id)} onClick={() => unfollow(u.id)}>unfollow</button>
-                                : <button disabled={props.followInProgress.includes(u.id)} onClick={() => follow(u.id)}>follow</button>}
+                            {u.followed ? <button disabled={props.followInProgress.includes(u.id)} onClick={() => props.unfollowT(u.id)}>unfollow</button>
+                                : <button disabled={props.followInProgress.includes(u.id)} onClick={() => props.followT(u.id)}>follow</button>}
                         </div>
                     </span>
                 <span>

@@ -4,7 +4,8 @@ import {sendMessage, updateAnswerMessage} from "../../redux/dialogs_reducer";
 
 let mapStateToProps = state => {
     return {
-        dialogs: state.dialogPage.dialogs
+        dialogs: state.dialogPage.dialogs,
+        isAuth: state.auth.isAuth
     }
 }
 

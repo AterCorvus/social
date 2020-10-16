@@ -24,12 +24,34 @@ export const UserApi = {
 
 export const AuthApi = {
     Authorize() {
-        return instance.get('auth/me').then(response => response.data);
+        return instance.get(`auth/me`).then(response => response.data);
+    },
+
+    Login(email, password, rememberMe, captcha) {
+        return instance.post(`auth/login`, {email, password, rememberMe, captcha}).then(response => response.data);
+    },
+
+    Logout() {
+        return instance.delete(`auth/login`).then(response => response.data);
     }
 }
 
 export const ProfileApi = {
     getProfile(userId) {
         return instance.get(`profile/${userId}`).then(response => response.data);
+    },
+
+    getStatus(userId) {
+        return instance.get(`profile/status/${userId}`).then(response => response.data);
+    },
+
+    updateStatus(status) {
+        return instance.put(`profile/status`, {status}).then(response => response.data.resultCode);
+    }
+}
+
+export const Security = {
+    getCapthca() {
+        return instance.get(`security/get-c`).then(response => response.data);
     }
 }

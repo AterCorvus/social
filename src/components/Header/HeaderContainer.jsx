@@ -1,8 +1,8 @@
 import React from "react";
 import Header from "./Header";
 import {connect} from "react-redux";
-import {Authorize} from "../../redux/auth_reducer";
-import Preloader from "../Preloader/Preloader";
+import {AuthorizeThunk as Authorize, Logout} from "../../redux/auth_reducer";
+import Preloader from "../common/Preloader/Preloader";
 
 class HeaderContainer extends React.Component {
 
@@ -26,4 +26,4 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    Authorize})(HeaderContainer);
+    Authorize, Logout})(HeaderContainer);

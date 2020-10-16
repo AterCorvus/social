@@ -1,34 +1,44 @@
 import React from 'react';
 import classes from './MyPosts.module.css';
 import Post from "./Post/Post";
+import {Field, reduxForm} from "redux-form";
+import {required, maxLengthCreator} from "../../../utils/validators/validators";
+import {TextArea} from "../../common/FormsControls/FormsControls";
+
+const maxLengthValid = maxLengthCreator(10);
+
+const NewPostForm = (props) => {
+    return <div>
+        <form onSubmit={props.handleSubmit}>
+            <div>
+                <Field placeholder={"Text"} name={"text"} component={TextArea}
+                validate={[required, maxLengthValid]}/>
+            </div>
+            <div>
+                <button>Add Post</button>
+            </div>
+        </form>
+    </div>
+}
+
+const NewPostReduxForm = reduxForm({
+    form: 'newPost'
+})(NewPostForm);
 
 const MyPosts = (props) => {
     let postElements = props.posts
-        .map( post => <Post key={post.id} id={post.id} message={post.message} likesCount={post.likesCount}
-                         avatar={props.avatar}/>);
+        .map(post => <Post key={post.id} id={post.id} message={post.message} likesCount={post.likesCount}
+                           avatar={props.avatar}/>);
 
-    let newPostElement = React.createRef();
+    const onSubmit = (formData) => {
 
-    let onPostChange = () => {
-        let text = newPostElement.current.value;
-        props.updateNewPostText(text);
-    };
-
-    let addPost = () => {
-        props.addPost();
-    };
+    }
 
     return (
         <div className={classes.postsBlock}>
             <h3>My post</h3>
             <div>
-                <div>
-                    <textarea onChange={onPostChange} ref={newPostElement}
-                              value={props.newPostText}/>
-                </div>
-                <div>
-                    <button onClick={addPost}>Add Post</button>
-                </div>
+                <NewPostReduxForm onSubmit={onSubmit}/>
                 <div>
                     <button>Remove</button>
                 </div>

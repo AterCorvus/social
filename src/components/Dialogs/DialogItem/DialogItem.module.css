@@ -10,3 +10,8 @@
 .message {
     padding: 10px;
 }
+
+.dialogForm {
+    display: flex;
+    align-items: center;
+}

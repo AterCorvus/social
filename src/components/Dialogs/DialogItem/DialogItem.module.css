@@ -1,0 +1,17 @@
+.dialog {
+    display: flex;
+    padding: 10px;
+}
+
+.name {
+    padding: 10px;
+}
+
+.message {
+    padding: 10px;
+}
+
+.dialogForm {
+    display: flex;
+    align-items: center;
+}

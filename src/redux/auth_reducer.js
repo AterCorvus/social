@@ -1,5 +1,6 @@
 import {AuthApi, ProfileApi} from "../api/api";
 import {toggleIsFetcing as profileToggleIsFetching, setUserProfile} from "./profile_reducer";
+import {stopSubmit} from "redux-form";
 
 const SET_USER_DATA = "SET_USER_DATA";
 const TOGGLE_IS_CAPTCHA_REQ = "TOGGLE_IS_CAPTCHA_REQ";
@@ -30,12 +31,14 @@ const authReducer = (state = initialState, action) => {
 }
 
 export default authReducer;
-export const setAuthUserData = (userId, email, login, isAuth) => ({type: SET_USER_DATA, payload:
-        {userId, email, login, isAuth}});
+export const setAuthUserData = (userId, email, login, isAuth) => ({
+    type: SET_USER_DATA, payload:
+        {userId, email, login, isAuth}
+});
 export const toggleIsCaptchaReq = (isCaptchaReq) => ({type: TOGGLE_IS_CAPTCHA_REQ, isCaptchaReq});
 
 const Authorize = (dispatch) => {
-    AuthApi.Authorize()
+    return AuthApi.Authorize()
         .then(response => {
             if (response.resultCode === 0) {
                 const {id, email, login} = response.data;
@@ -50,11 +53,8 @@ const Authorize = (dispatch) => {
         });
 }
 
-export const AuthorizeThunk = () => {
-    return (dispatch) => {
-        Authorize(dispatch);
-    }
-}
+export const AuthorizeThunk = () => (dispatch) => Authorize(dispatch);
+
 
 export const Login = (email, password, rememberMe = 0, captcha) => {
     return (dispatch) => {
@@ -63,9 +63,11 @@ export const Login = (email, password, rememberMe = 0, captcha) => {
                 if (response.resultCode === 0) {
                     dispatch(toggleIsCaptchaReq(false));
                     return Authorize(dispatch);
-                }
-                else if(response.resultCode === 10) {
-                    dispatch(toggleIsCaptchaReq(true));
+                } else if (response.resultCode === 10) {
+                    dispatch(stopSubmit("login", {_error: "Common Error"}));
+                } else {
+                    const message = response.messages.length > 0 ? response.messages[0] : "Some Error";
+                    dispatch(stopSubmit("login", {_error: message}));
                 }
             })
     }
@@ -75,7 +77,7 @@ export const Logout = () => {
     return (dispatch) => {
         AuthApi.Logout()
             .then(response => {
-                if(response.resultCode === 0) {
+                if (response.resultCode === 0) {
                     dispatch(setAuthUserData(null, null, null, false));
                 }
             })

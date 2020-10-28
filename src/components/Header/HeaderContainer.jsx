@@ -1,18 +1,13 @@
 import React from "react";
 import Header from "./Header";
 import {connect} from "react-redux";
-import {AuthorizeThunk as Authorize, Logout} from "../../redux/auth_reducer";
+import {Logout} from "../../redux/auth_reducer";
 import Preloader from "../common/Preloader/Preloader";
 
 class HeaderContainer extends React.Component {
-
-    componentDidMount() {
-        this.props.Authorize();
-    }
-
     render() {
         return <>
-            {this.props.profileIsFetching && <Preloader />}
+            {this.props.profileIsFetching && <Preloader/>}
             <Header {...this.props} />
         </>
     }
@@ -26,4 +21,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    Authorize, Logout})(HeaderContainer);
+    Logout
+})(HeaderContainer);
